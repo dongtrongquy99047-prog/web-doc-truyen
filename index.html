@@ -458,11 +458,17 @@ công chúa vẫn bị định đoạt bởi quyền lực"
         });
     });
 
-    function openStory(storyId) {
-        currentStory = storyData[storyId];
-        currentChapter = 0;
+function openStory(storyId) {
+    currentStory = storyData[storyId];
+    currentChapter = 0;
 
-               if (!currentStory) return;
+    if (!currentStory) return;
+
+    if (currentStory.chapters.length === 0) {
+        alert("Truyện đang được cập nhật!");
+        currentStory = null;
+        return;
+    }
 
         if (currentStory.chapters.length === 0) {
             alert("Truyện đang được cập nhật!");
