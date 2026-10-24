@@ -261,7 +261,7 @@
             </article>
 
             <article class="story" data-story="2">
-                <img src="https://placehold.co/600x800?text=Truyen+2" alt="Truyện 2">
+                <img src="images/truyen2/bia2.jpg" alt="Jack và cây đậu ">
 
                 <div class="story-content">
                     <h3>Truyện thứ hai</h3>
@@ -277,7 +277,7 @@
             </article>
 
             <article class="story" data-story="3">
-                <img src="https://placehold.co/600x800?text=Truyen+3" alt="Truyện 3">
+               <img src="images/truyen3/bia3.jpg" alt="Sự im lặng của bầy cừu">
 
                 <div class="story-content">
                     <h3>Truyện thứ ba</h3>
@@ -411,41 +411,16 @@ công chúa vẫn bị định đoạt bởi quyền lực"
     ]
 },
 
-        2: {
-            title: "Jack và cây đậu ",
-            description: "Trong một thế giới bị bóp nghẹt bởi đói nghèo, Jack đổi gia tài cuối cùng của gia đình lấy một nắm hạt giống lạ, đẩy người mẹ già vào bước đường cùng của sự tuyệt vọng.  ",
+                2: {
+            title: "Jack và cây đậu",
+            description: "Trong một thế giới bị bóp nghẹt bởi đói nghèo, Jack đổi gia tài cuối cùng của gia đình lấy một nắm hạt giống lạ, đẩy người mẹ già vào bước đường cùng của sự tuyệt vọng.",
             chapters: []
-                {
-                    title: "Chương 1: Cuộc gặp gỡ",
-                    content: `Trong một ngày bình thường, hai người xa lạ tình cờ gặp nhau.
-
-Cuộc gặp gỡ ấy đã mở ra một câu chuyện mới.`
-                },
-                {
-                    title: "Chương 2: Người bạn mới",
-                    content: `Họ dần hiểu nhau hơn và bắt đầu chia sẻ những câu chuyện của mình.
-
-Tình bạn cũng từ đó lớn dần.`
-                }
-            ]
         },
+
         3: {
             title: "Sự im lặng của bầy cừu",
             description: "Sự im lặng của bầy cừu là bức tranh trần trụi về sự bất lực trước cái ác. Để giải cứu một nạn nhân khỏi kẻ sát nhân lột da, nữ học viên FBI Clarice Starling buộc phải đánh đổi bằng cách phơi bày những tổn thương tâm lý sâu kín nhất cho gã ăn thịt người Hannibal Lecter cấu xé.",
             chapters: []
-                {
-                    title: "Chương 1: Thế giới bí ẩn",
-                    content: `Cánh cửa dẫn đến một thế giới kỳ lạ từ từ mở ra.
-
-Nhân vật chính bước vào và bắt đầu khám phá.`
-                },
-                {
-                    title: "Chương 2: Bí mật",
-                    content: `Một bí mật bất ngờ dần được hé lộ.
-
-Hành trình phía trước sẽ không hề dễ dàng.`
-                }
-            ]
         }
     };
 
@@ -487,7 +462,13 @@ Hành trình phía trước sẽ không hề dễ dàng.`
         currentStory = storyData[storyId];
         currentChapter = 0;
 
-        if (!currentStory) return;
+               if (!currentStory) return;
+
+        if (currentStory.chapters.length === 0) {
+            alert("Truyện đang được cập nhật!");
+            currentStory = null;
+            return;
+        }
 
         welcome.style.display = "none";
         toolbar.style.display = "none";
