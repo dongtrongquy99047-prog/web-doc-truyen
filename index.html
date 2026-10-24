@@ -128,7 +128,62 @@
     #searchInput {
         width: 100%;
     }
-}  </style>
+} /* Hiệu ứng khi rê chuột vào truyện */
+.story {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.story:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* Trang chi tiết truyện */
+#readerPage {
+    display: none;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-top: 25px;
+}
+
+.back-button,
+.chapter-button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 8px 8px 8px 0;
+}
+
+.back-button {
+    background: #333;
+    color: white;
+}
+
+.chapter-button {
+    background: #eee;
+    color: #222;
+}
+
+.chapter-button.active {
+    background: #f5a623;
+    color: white;
+}
+
+#chapterContent {
+    margin-top: 25px;
+    font-size: 18px;
+    line-height: 2;
+    white-space: pre-line;
+}
+
+@media (max-width: 700px) {
+    #readerPage {
+        padding: 20px;
+    }
+} </style>
 </head>
 
 <body>
@@ -163,7 +218,7 @@
 
 <section class="stories" id="storiesList">
 
-            <article class="story">
+            <article class="story" data-story="1">
                 <img src="https://placehold.co/600x800?text=Truyen+1" alt="Truyện 1">
 
                 <div class="story-content">
@@ -179,7 +234,7 @@
                 </div>
             </article>
 
-            <article class="story">
+            <article class="story" data-story="2">
                 <img src="https://placehold.co/600x800?text=Truyen+2" alt="Truyện 2">
 
                 <div class="story-content">
@@ -195,7 +250,7 @@
                 </div>
             </article>
 
-            <article class="story">
+            <article class="story" data-story="3">
                 <img src="https://placehold.co/600x800?text=Truyen+3" alt="Truyện 3">
 
                 <div class="story-content">
@@ -211,32 +266,222 @@
                 </div>
             </article>
 
+                </section>
+
+        <!-- Trang chi tiết và đọc truyện -->
+        <section id="readerPage">
+            <button class="back-button" id="backButton">
+                ← Quay lại danh sách
+            </button>
+
+            <h2 id="readerTitle" style="margin: 20px 0 10px;">
+                Tên truyện
+            </h2>
+
+            <p id="readerDescription"></p>
+
+            <h3 style="margin-top: 25px;">
+                Danh sách chương
+            </h3>
+
+            <div id="chapterList"></div>
+
+            <hr style="margin: 20px 0;">
+
+            <h3 id="chapterTitle">Chương 1</h3>
+
+            <div id="chapterContent"></div>
+
+            <div style="margin-top: 25px;">
+                <button class="chapter-button" id="prevChapter">
+                    ← Chương trước
+                </button>
+
+                <button class="chapter-button" id="nextChapter">
+                    Chương sau →
+                </button>
+            </div>
         </section>
 
     </main>
 
+
 <script>
+    // Dữ liệu truyện mẫu
+    const storyData = {
+        1: {
+            title: "Truyện đầu tiên",
+            description: "Một câu chuyện về hành trình khám phá thế giới.",
+            chapters: [
+                {
+                    title: "Chương 1: Khởi đầu",
+                    content: `Một buổi sáng, nhân vật chính bắt đầu hành trình của mình.
+
+Phía trước là một thế giới rộng lớn với vô vàn điều bí ẩn.
+
+Đây là nội dung mẫu. Bạn có thể thay bằng nội dung truyện của mình.`
+                },
+                {
+                    title: "Chương 2: Hành trình mới",
+                    content: `Sau chuyến đi đầu tiên, nhân vật chính gặp những người bạn mới.
+
+Một cuộc phiêu lưu khác lại bắt đầu.
+
+Đây là nội dung mẫu của chương thứ hai.`
+                }
+            ]
+        },
+        2: {
+            title: "Truyện thứ hai",
+            description: "Một câu chuyện về tình bạn và những cuộc gặp gỡ.",
+            chapters: [
+                {
+                    title: "Chương 1: Cuộc gặp gỡ",
+                    content: `Trong một ngày bình thường, hai người xa lạ tình cờ gặp nhau.
+
+Cuộc gặp gỡ ấy đã mở ra một câu chuyện mới.`
+                },
+                {
+                    title: "Chương 2: Người bạn mới",
+                    content: `Họ dần hiểu nhau hơn và bắt đầu chia sẻ những câu chuyện của mình.
+
+Tình bạn cũng từ đó lớn dần.`
+                }
+            ]
+        },
+        3: {
+            title: "Truyện thứ ba",
+            description: "Một chuyến phiêu lưu trong thế giới tưởng tượng.",
+            chapters: [
+                {
+                    title: "Chương 1: Thế giới bí ẩn",
+                    content: `Cánh cửa dẫn đến một thế giới kỳ lạ từ từ mở ra.
+
+Nhân vật chính bước vào và bắt đầu khám phá.`
+                },
+                {
+                    title: "Chương 2: Bí mật",
+                    content: `Một bí mật bất ngờ dần được hé lộ.
+
+Hành trình phía trước sẽ không hề dễ dàng.`
+                }
+            ]
+        }
+    };
+
     const searchInput = document.getElementById("searchInput");
     const stories = document.querySelectorAll(".story");
+    const welcome = document.querySelector(".welcome");
+    const toolbar = document.querySelector(".story-toolbar");
+    const storiesList = document.getElementById("storiesList");
+    const readerPage = document.getElementById("readerPage");
 
+    let currentStory = null;
+    let currentChapter = 0;
+
+    // Tìm kiếm truyện
     searchInput.addEventListener("input", function () {
-        const keyword = this.value
-            .trim()
-            .toLocaleLowerCase("vi");
+        const keyword = this.value.trim().toLocaleLowerCase("vi");
 
         stories.forEach(function (story) {
-            const title = story.querySelector("h3")
-                .textContent.toLocaleLowerCase("vi");
+            const title = story.querySelector("h3").textContent
+                .toLocaleLowerCase("vi");
+            const description = story.querySelector("p").textContent
+                .toLocaleLowerCase("vi");
 
-            const description = story.querySelector("p")
-                .textContent.toLocaleLowerCase("vi");
-
-            const matches =
-                title.includes(keyword) ||
-                description.includes(keyword);
-
-            story.style.display = matches ? "" : "none";
+            story.style.display =
+                title.includes(keyword) || description.includes(keyword)
+                    ? ""
+                    : "none";
         });
     });
-</script></body>
+
+    // Mở trang chi tiết khi bấm vào truyện
+    stories.forEach(function (story) {
+        story.addEventListener("click", function () {
+            openStory(this.dataset.story);
+        });
+    });
+
+    function openStory(storyId) {
+        currentStory = storyData[storyId];
+        currentChapter = 0;
+
+        if (!currentStory) return;
+
+        welcome.style.display = "none";
+        toolbar.style.display = "none";
+        storiesList.style.display = "none";
+        readerPage.style.display = "block";
+
+        document.getElementById("readerTitle").textContent =
+            currentStory.title;
+
+        document.getElementById("readerDescription").textContent =
+            currentStory.description;
+
+        // Tạo danh sách chương tự động
+        const chapterList = document.getElementById("chapterList");
+        chapterList.replaceChildren();
+
+        currentStory.chapters.forEach(function (chapter, index) {
+            const button = document.createElement("button");
+            button.className = "chapter-button";
+            button.textContent = chapter.title;
+
+            button.addEventListener("click", function () {
+                showChapter(index);
+            });
+
+            chapterList.appendChild(button);
+        });
+
+        showChapter(0);
+        window.scrollTo(0, 0);
+    }
+
+    // Hiển thị nội dung chương được chọn
+    function showChapter(index) {
+        if (!currentStory) return;
+
+        if (index < 0 || index >= currentStory.chapters.length) return;
+
+        currentChapter = index;
+        const chapter = currentStory.chapters[index];
+
+        document.getElementById("chapterTitle").textContent = chapter.title;
+        document.getElementById("chapterContent").textContent = chapter.content;
+
+        document.querySelectorAll("#chapterList button").forEach(
+            function (button, i) {
+                button.classList.toggle("active", i === index);
+            }
+        );
+
+        document.getElementById("prevChapter").disabled = index === 0;
+        document.getElementById("nextChapter").disabled =
+            index === currentStory.chapters.length - 1;
+    }
+
+    // Chuyển chương
+    document.getElementById("prevChapter").addEventListener("click", function () {
+        showChapter(currentChapter - 1);
+    });
+
+    document.getElementById("nextChapter").addEventListener("click", function () {
+        showChapter(currentChapter + 1);
+    });
+
+    // Quay về trang chủ
+    document.getElementById("backButton").addEventListener("click", function () {
+        readerPage.style.display = "none";
+        welcome.style.display = "";
+        toolbar.style.display = "";
+        storiesList.style.display = "";
+
+        currentStory = null;
+        window.scrollTo(0, 0);
+    });
+</script>
+</body>
 </html>
