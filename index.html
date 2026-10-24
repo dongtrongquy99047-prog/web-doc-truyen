@@ -183,6 +183,19 @@
     #readerPage {
         padding: 20px;
     }
+}#chapterImages {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+#chapterImages img {
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+    display: block;
 } </style>
 </head>
 
@@ -219,7 +232,7 @@
 <section class="stories" id="storiesList">
 
             <article class="story" data-story="1">
-                <img src="https://placehold.co/600x800?text=Truyen+1" alt="Truyện 1">
+                <img src="images/truyen1/wb.jpg" alt="Truyện 1">
 
                 <div class="story-content">
                     <h3>Truyện đầu tiên</h3>
@@ -291,7 +304,7 @@
             <h3 id="chapterTitle">Chương 1</h3>
 
             <div id="chapterContent"></div>
-
+<div id="chapterImages"></div>
             <div style="margin-top: 25px;">
                 <button class="chapter-button" id="prevChapter">
                     ← Chương trước
@@ -313,14 +326,22 @@
             title: "Truyện đầu tiên",
             description: "Một câu chuyện về hành trình khám phá thế giới.",
             chapters: [
-                {
-                    title: "Chương 1: Khởi đầu",
-                    content: `Một buổi sáng, nhân vật chính bắt đầu hành trình của mình.
 
-Phía trước là một thế giới rộng lớn với vô vàn điều bí ẩn.
+{
+    title: "Chương 1: Khởi đầu",
+    content: "",
+    images: [
+        "images/truyen1/w1.jpg",
+        "images/truyen1/w2.jpg",
+        "images/truyen1/w3.jpg",
+        "images/truyen1/w4.jpg",
+        "images/truyen1/w5.jpg",
+        "images/truyen1/w6.jpg",
+        "images/truyen1/w7.jpg",
+        "images/truyen1/w8.jpg"
+    ]
+},
 
-Đây là nội dung mẫu. Bạn có thể thay bằng nội dung truyện của mình.`
-                },
                 {
                     title: "Chương 2: Hành trình mới",
                     content: `Sau chuyến đi đầu tiên, nhân vật chính gặp những người bạn mới.
@@ -450,7 +471,27 @@ Hành trình phía trước sẽ không hề dễ dàng.`
         const chapter = currentStory.chapters[index];
 
         document.getElementById("chapterTitle").textContent = chapter.title;
-        document.getElementById("chapterContent").textContent = chapter.content;
+       
+document.getElementById("chapterContent").textContent =
+    chapter.content || "";
+
+// Hiển thị ảnh truyện
+const chapterImages = document.getElementById("chapterImages");
+
+chapterImages.replaceChildren();
+
+if (chapter.images && chapter.images.length > 0) {
+    chapter.images.forEach(function (imagePath, i) {
+        const img = document.createElement("img");
+
+        img.src = imagePath;
+        img.alt = "Trang truyện " + (i + 1);
+        img.loading = "lazy";
+
+        chapterImages.appendChild(img);
+    });
+}
+
 
         document.querySelectorAll("#chapterList button").forEach(
             function (button, i) {
