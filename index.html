@@ -215,5 +215,28 @@
 
     </main>
 
-</body>
+<script>
+    const searchInput = document.getElementById("searchInput");
+    const stories = document.querySelectorAll(".story");
+
+    searchInput.addEventListener("input", function () {
+        const keyword = this.value
+            .trim()
+            .toLocaleLowerCase("vi");
+
+        stories.forEach(function (story) {
+            const title = story.querySelector("h3")
+                .textContent.toLocaleLowerCase("vi");
+
+            const description = story.querySelector("p")
+                .textContent.toLocaleLowerCase("vi");
+
+            const matches =
+                title.includes(keyword) ||
+                description.includes(keyword);
+
+            story.style.display = matches ? "" : "none";
+        });
+    });
+</script></body>
 </html>
