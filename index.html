@@ -97,7 +97,38 @@
                 grid-template-columns: 1fr;
             }
         }
-    </style>
+  .story-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+#searchInput {
+    width: 280px;
+    max-width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+}
+
+#searchInput:focus {
+    border-color: #f5a623;
+}
+
+@media (max-width: 700px) {
+    .story-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    #searchInput {
+        width: 100%;
+    }
+}  </style>
 </head>
 
 <body>
@@ -119,9 +150,18 @@
             <p>Đọc những câu chuyện yêu thích của bạn.</p>
         </section>
 
-        <h2>Truyện mới</h2>
+        <div class="story-toolbar">
+    <h2>Truyện mới</h2>
 
-        <section class="stories">
+    <input
+        type="search"
+        id="searchInput"
+        placeholder="Tìm tên truyện..."
+        aria-label="Tìm tên truyện"
+    >
+</div>
+
+<section class="stories" id="storiesList">
 
             <article class="story">
                 <img src="https://placehold.co/600x800?text=Truyen+1" alt="Truyện 1">
