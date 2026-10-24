@@ -196,6 +196,17 @@
     max-width: 900px;
     height: auto;
     display: block;
+}.page-description {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 35px;
+    padding: 15px 20px;
+    color: #555;
+    font-size: 16px;
+    line-height: 1.8;
+    text-align: center;
+    background: #f8f8f8;
+    border-radius: 6px;
 } </style>
 </head>
 
@@ -529,15 +540,26 @@ const chapterImages = document.getElementById("chapterImages");
 chapterImages.replaceChildren();
 
 if (chapter.images && chapter.images.length > 0) {
-    chapter.images.forEach(function (imagePath, i) {
-        const img = document.createElement("img");
+   
+chapter.images.forEach(function(page, i) {
+    // Tạo ảnh
+    const img = document.createElement("img");
 
-        img.src = imagePath;
-        img.alt = "Trang truyện " + (i + 1);
-        img.loading = "lazy";
+    img.src = page.src;
+    img.alt = "Trang truyện " + (i + 1);
+    img.loading = "lazy";
 
-        chapterImages.appendChild(img);
-    });
+    chapterImages.appendChild(img);
+
+    // Tạo mô tả bên dưới ảnh
+    const caption = document.createElement("p");
+
+    caption.className = "page-description";
+    caption.textContent = page.description || "";
+
+    chapterImages.appendChild(caption);
+});
+
 }
 
 
